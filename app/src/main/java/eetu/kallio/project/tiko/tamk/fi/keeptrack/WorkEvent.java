@@ -1,0 +1,82 @@
+package eetu.kallio.project.tiko.tamk.fi.keeptrack;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+/**
+ * Created by Eetu Kallio on 18.4.2017
+ */
+
+public class WorkEvent {
+
+    private Date startDate;
+    private SimpleDateFormat format;
+    private String startDateToString;
+    private Date endDate;
+    private String endDateToString;
+    private long durationMs;
+    private long durationSeconds;
+    private long durationMinutes;
+    private long durationHr;
+
+
+    public WorkEvent() {
+
+        startDate = new Date();
+        format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.UK);
+        startDateToString = format.format(startDate);
+    }
+
+    @Override
+    public String toString () {
+        return startDateToString;
+    }
+
+    public WorkEvent endEvent () {
+
+        endDate = new Date();
+        endDateToString = format.format(endDate);
+        durationMs = Math.abs(endDate.getTime()-startDate.getTime());
+        durationHr = durationMs / (1000*60*60);
+        durationSeconds = durationMs / (1000);
+        durationMinutes = durationMs / (1000*60);
+        return this;
+    }
+
+    public Date getStartDate () {
+        return startDate;
+    }
+
+    public SimpleDateFormat getFormat () {
+        return format;
+    }
+
+    public String getStartDateToString () {
+        return startDateToString;
+    }
+
+    public Date getEndDate () {
+        return endDate;
+    }
+
+    public String getEndDateToString () {
+        return endDateToString;
+    }
+
+    public long getDurationMs () {
+        return durationMs;
+    }
+
+    public long getDurationHr () {
+        return durationHr;
+    }
+
+    public long getDurationSeconds () {
+        return durationSeconds;
+    }
+
+    public long getDurationMinutes () {
+        return durationMinutes;
+    }
+}
