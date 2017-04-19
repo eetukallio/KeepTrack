@@ -1,5 +1,7 @@
 package eetu.kallio.project.tiko.tamk.fi.keeptrack;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Event ended");
             event.endEvent();
             System.out.println(event.getDurationSeconds());
+            String endMsg = "Event ended. Duration: " + event.getDurationSeconds();
+            Snackbar.make(coordinatorLayout, endMsg, Snackbar.LENGTH_SHORT).show();
             EVENT_ON = false;
         }
     }
-
-
 }
