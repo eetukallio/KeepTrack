@@ -1,5 +1,6 @@
 package eetu.kallio.project.tiko.tamk.fi.keeptrack;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -8,7 +9,7 @@ import java.util.Locale;
  * Created by Eetu Kallio on 18.4.2017
  */
 
-public class WorkEvent {
+public class WorkEvent implements Serializable {
 
     private Date startDate;
     private SimpleDateFormat format;
