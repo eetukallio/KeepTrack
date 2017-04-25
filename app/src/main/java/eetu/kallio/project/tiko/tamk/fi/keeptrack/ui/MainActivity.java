@@ -1,9 +1,7 @@
-package eetu.kallio.project.tiko.tamk.fi.keeptrack;
-
+package eetu.kallio.project.tiko.tamk.fi.keeptrack.ui;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -12,11 +10,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.R;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventPostTask;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.receivers.EventReceiver;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.services.EventService;
+
 public class MainActivity extends AppCompatActivity {
 
     private boolean EVENT_ON = false;
     private CoordinatorLayout coordinatorLayout;
-    private EventReceiver  receiver;
+    private EventReceiver receiver;
     private Button startButton;
     LocalBroadcastManager manager;
 
@@ -70,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void  postEvent(WorkEvent event) {
+
+        new EventPostTask().execute(event);
+    }
+
+    public void viewEvents(View view) {
 
 
     }

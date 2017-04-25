@@ -2,6 +2,8 @@
 <manifest package="eetu.kallio.project.tiko.tamk.fi.keeptrack"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -18,19 +20,22 @@
         </activity>
 
         <service
-            android:name=".EventService"
+            android:name=".services.EventService"
             android:enabled="true"
             android:exported="true">
         </service>
 
         <receiver
-            android:name=".EventReceiver"
+            android:name=".receivers.EventReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="fi.tamk.tiko.project.kallio.eetu.event" />
+                <action android:name="fi.tamk.tiko.project.kallio.eetu.event"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".ui.EventListActivity">
+        </activity>
     </application>
 
 </manifest>

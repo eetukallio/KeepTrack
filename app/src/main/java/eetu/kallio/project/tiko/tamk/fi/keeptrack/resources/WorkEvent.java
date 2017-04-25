@@ -1,4 +1,4 @@
-package eetu.kallio.project.tiko.tamk.fi.keeptrack;
+package eetu.kallio.project.tiko.tamk.fi.keeptrack.resources;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +20,7 @@ public class WorkEvent implements Serializable {
     private long durationSeconds;
     private long durationMinutes;
     private long durationHr;
+    private int user;
 
 
     public WorkEvent() {
@@ -27,6 +28,7 @@ public class WorkEvent implements Serializable {
         startDate = new Date();
         format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.UK);
         startDateToString = format.format(startDate);
+        user = 1;
     }
 
     @Override
@@ -79,5 +81,13 @@ public class WorkEvent implements Serializable {
 
     public long getDurationMinutes () {
         return durationMinutes;
+    }
+
+    public int getUser () {
+        return user;
+    }
+
+    public void setUser (int user) {
+        this.user = user;
     }
 }

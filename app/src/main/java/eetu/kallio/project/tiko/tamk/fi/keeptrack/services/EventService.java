@@ -1,10 +1,12 @@
-package eetu.kallio.project.tiko.tamk.fi.keeptrack;
+package eetu.kallio.project.tiko.tamk.fi.keeptrack.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 
 public class EventService extends Service implements Runnable {
 
