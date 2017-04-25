@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(coordinatorLayout, "Event started", Snackbar.LENGTH_SHORT).show();
             startButton.setText("STOP TRACKING");
         } else {
+
             WorkEvent event;
             stopService(new Intent(this, EventService.class));
             event = receiver.getEvent();
@@ -80,6 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void viewEvents(View view) {
 
-
+        startActivity(new Intent(this, EventListActivity.class));
     }
 }

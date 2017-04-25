@@ -47,7 +47,6 @@ public class EventPostTask extends AsyncTask<WorkEvent, Void, Integer> {
             System.out.println(connection.getResponseCode());
             result = connection.getResponseCode();
             connection.disconnect();
-            connection.disconnect();
         } catch ( IOException e ) {
             e.printStackTrace();
         }
