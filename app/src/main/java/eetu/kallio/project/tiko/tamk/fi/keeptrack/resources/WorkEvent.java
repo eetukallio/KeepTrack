@@ -1,5 +1,6 @@
-package eetu.kallio.project.tiko.tamk.fi.keeptrack;
+package eetu.kallio.project.tiko.tamk.fi.keeptrack.resources;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -8,7 +9,7 @@ import java.util.Locale;
  * Created by Eetu Kallio on 18.4.2017
  */
 
-public class WorkEvent {
+public class WorkEvent implements Serializable {
 
     private Date startDate;
     private SimpleDateFormat format;
@@ -19,6 +20,7 @@ public class WorkEvent {
     private long durationSeconds;
     private long durationMinutes;
     private long durationHr;
+    private int user;
 
 
     public WorkEvent() {
@@ -26,6 +28,7 @@ public class WorkEvent {
         startDate = new Date();
         format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.UK);
         startDateToString = format.format(startDate);
+        user = 1;
     }
 
     @Override
@@ -78,5 +81,13 @@ public class WorkEvent {
 
     public long getDurationMinutes () {
         return durationMinutes;
+    }
+
+    public int getUser () {
+        return user;
+    }
+
+    public void setUser (int user) {
+        this.user = user;
     }
 }
