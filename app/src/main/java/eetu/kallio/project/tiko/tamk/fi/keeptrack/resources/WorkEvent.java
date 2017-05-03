@@ -11,6 +11,7 @@ import java.util.Locale;
 
 public class WorkEvent implements Serializable {
 
+    private int id;
     private Date startDate;
     private SimpleDateFormat format;
     private String startDateToString;
@@ -89,5 +90,13 @@ public class WorkEvent implements Serializable {
 
     public void setUser (int user) {
         this.user = user;
+    }
+
+    public int getId () {
+        return id;
+    }
+
+    public void setId (int id) {
+        this.id = id;
     }
 }
