@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.R;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventPostTask;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private EventReceiver receiver;
     private Button startButton;
+    private AVLoadingIndicatorView avi;
     LocalBroadcastManager manager;
 
     @Override
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.myCoordinatorLayout);
         startButton = (Button) findViewById(R.id.startTrackingButton);
+        avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        avi.hide();
     }
 
     @Override
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Event started");
             Snackbar.make(coordinatorLayout, "Event started", Snackbar.LENGTH_SHORT).show();
             startButton.setText("STOP TRACKING");
+            avi.show();
         } else {
 
             WorkEvent event;
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             stopService(new Intent(this, EventService.class));
             EVENT_ON = false;
             postEvent(event);
+            avi.hide();
         }
     }
 

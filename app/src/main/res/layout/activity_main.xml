@@ -10,29 +10,41 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="eetu.kallio.project.tiko.tamk.fi.keeptrack.ui.MainActivity"
-        android:background="@color/backgroundGreen">
+        android:background="@color/backgroundGreen"
+        tools:context="eetu.kallio.project.tiko.tamk.fi.keeptrack.ui.MainActivity">
 
         <Button
             android:id="@+id/startTrackingButton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="87dp"
             android:background="@color/buttonBlue"
             android:onClick="startEvent"
             android:text="start tracking"
-            android:layout_alignBottom="@+id/viewEventsButton"
+            android:layout_marginTop="32dp"
+            android:layout_below="@+id/avi"
             android:layout_centerHorizontal="true"/>
 
         <Button
             android:id="@+id/viewEventsButton"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="129dp"
             android:background="@color/buttonBlue"
             android:onClick="viewEvents"
             android:text="view events"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="40dp"
+            android:layout_below="@+id/startTrackingButton"
             android:layout_centerHorizontal="true"/>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AVLoadingIndicatorView.Large"
+            android:visibility="visible"
+            app:indicatorName="BallTrianglePathIndicator"
+            app:indicatorColor="@color/buttonBlue"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
