@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+/test
+/server/target
+/server/.idea

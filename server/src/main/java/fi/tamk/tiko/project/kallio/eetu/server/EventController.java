@@ -38,6 +38,18 @@ public class EventController {
     }
 
     /**
+     * Returns all events in the database.
+     *
+     * @return All events in the database as an iterable.
+     */
+    @RequestMapping(value = "/events", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteEvents() {
+        db.deleteAll();
+    }
+    
+
+    /**
      * Returns a event by id.
      *
      * @param id Id of the event.

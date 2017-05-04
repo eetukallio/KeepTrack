@@ -69,6 +69,7 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
         JSONArray array = null;
         String date;
         float duration;
+        String durationMetric = "s";
         ListView listView = (ListView) main.findViewById(R.id.eventList);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(main, R.layout.list_item, R.id.itemTextView);
         try {
@@ -87,7 +88,14 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
 
                     date = object.getString("date");
                     duration = (float)object.getDouble("duration");
-                    adapter.add(date + " \nDuration: " + duration);
+                    if ( duration > 3600 ) {
+                        duration /= 3600;
+                        durationMetric = "hrs";
+                    }else if ( duration > 60 ) {
+                        duration /= 60;
+                        durationMetric = "min";
+                    }
+                    adapter.add(date + " \nDuration: " + duration + durationMetric);
                 }
             }
         } catch ( JSONException e ) {
