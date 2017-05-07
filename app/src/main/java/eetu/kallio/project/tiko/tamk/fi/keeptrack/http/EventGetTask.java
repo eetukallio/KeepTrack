@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.NumberPicker;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +15,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.R;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.EventArrayAdapter;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.ui.EventListActivity;
 
 /**
@@ -66,12 +71,11 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected void onPostExecute (Integer integer) {
 
+        Log.d("EventGetTask", "getting events");
+
         JSONArray array = null;
-        String date;
-        float duration;
-        String durationMetric = "s";
         ListView listView = (ListView) main.findViewById(R.id.eventList);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(main, R.layout.list_item, R.id.itemTextView);
+        EventArrayAdapter adapter = new EventArrayAdapter(main, R.layout.list_item, R.id.itemTextView);
         try {
             array = new JSONArray(json);
             Log.d("JSONArray", array.toString());
@@ -86,17 +90,10 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
 
                     JSONObject object = array.getJSONObject(i);
 
-                    if ( object.get("user").equals(main.getUser()) ) {
-                        date = object.getString("date");
-                        duration = (float)object.getDouble("duration");
-                        if ( duration > 3600 ) {
-                            duration /= 3600;
-                            durationMetric = "hrs";
-                        }else if ( duration > 60 ) {
-                            duration /= 60;
-                            durationMetric = "min";
-                        }
-                        adapter.add(date + " \nDuration: " + duration + durationMetric);
+                    WorkEvent event = new WorkEvent(object.getInt("id"), object.getString("date"), object.getLong("duration"), object.getString("user"));
+
+                    if ( event.getUser().equals(main.getUser()) ) {
+                        adapter.add(event);
                     }
 
                 }

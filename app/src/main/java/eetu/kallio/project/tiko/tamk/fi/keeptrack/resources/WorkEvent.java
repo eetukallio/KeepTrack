@@ -32,6 +32,13 @@ public class WorkEvent implements Serializable {
         user = "";
     }
 
+    public WorkEvent (int id, String startDateToString, long durationSeconds, String user) {
+        this.id = id;
+        this.startDateToString = startDateToString;
+        this.durationSeconds = durationSeconds;
+        this.user = user;
+    }
+
     @Override
     public String toString () {
         return startDateToString;

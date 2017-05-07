@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private SignInButton signInButton;
     private Button logOutButton;
     private TextView userNameView;
+    private Toolbar toolbar;
     private GoogleApiClient googleApiClient;
     private static final int REQ_CODE = 666;
     private String userId;
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
         logOutButton = (Button) findViewById(R.id.logOutButton);
         userNameView = (TextView) findViewById(R.id.userName);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         avi.hide();
         mainLayout.setVisibility(View.GONE);
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestId().build();

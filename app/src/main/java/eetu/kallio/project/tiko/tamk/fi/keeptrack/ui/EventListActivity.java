@@ -2,6 +2,8 @@ package eetu.kallio.project.tiko.tamk.fi.keeptrack.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -11,6 +13,7 @@ import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventGetTask;
 public class EventListActivity extends AppCompatActivity {
 
     private String user;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -18,10 +21,16 @@ public class EventListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_list);
         user = getIntent().getExtras().getString("user");
         ListView listView = (ListView) findViewById(R.id.eventList);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         new EventGetTask(this).execute();
     }
 
     public String getUser () {
         return user;
+    }
+
+    public void removeEvent(View view) {
+
     }
 }

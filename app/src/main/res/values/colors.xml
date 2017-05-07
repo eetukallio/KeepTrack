@@ -6,4 +6,5 @@
     <color name="backgroundGreen">#032336</color>
     <color name="buttonBlue">#2189bc</color>
     <color name="listBackground">#477087</color>
+    <color name="listItem">#3cd0e0</color>
 </resources>

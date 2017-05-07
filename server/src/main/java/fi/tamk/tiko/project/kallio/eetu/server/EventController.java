@@ -48,6 +48,17 @@ public class EventController {
         db.deleteAll();
     }
 
+    /**
+     * Returns all events in the database.
+     *
+     * @return All events in the database as an iterable.
+     */
+    @RequestMapping(value = "/events/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteEvent(@PathVariable("id") long id) {
+        db.delete(id);
+    }
+
 
     /**
      * Returns a event by id.
@@ -55,7 +66,7 @@ public class EventController {
      * @param id Id of the event.
      * @return WorkEvent matching the id.
      */
-    @RequestMapping(value = "/events/{eventId}",  method=RequestMethod.GET)
+    @RequestMapping(value = "/events/{id}",  method=RequestMethod.GET)
     public WorkEvent fetchEvent(@PathVariable long id) {
         return db.findOne(id);
     }
