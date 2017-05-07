@@ -10,6 +10,7 @@
               android:layout_height="match_parent"
               android:padding="15dp"
               android:textSize="20sp"
+              android:textColor="@color/fontwhite"
               android:textStyle="bold"
               android:background="@color/listItem">
     </TextView>

@@ -1,21 +1,22 @@
 package eetu.kallio.project.tiko.tamk.fi.keeptrack.resources;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.text.DecimalFormat;
-
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.R;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventDeleteTask;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.ui.EventListActivity;
@@ -34,16 +35,18 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
     private String startMinutes;
     private float duration;
     private EventListActivity main;
+    private Animation slide;
 
 
     public EventArrayAdapter (@NonNull Context context, @LayoutRes int resource, @IdRes int textViewResourceId) {
         super(context, resource, textViewResourceId);
         main = (EventListActivity) context;
+        slide = AnimationUtils.loadAnimation(context, R.anim.pulse);
     }
 
     @NonNull
     @Override
-    public View getView (int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView (final int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
 
         Log.d("getView", "getting view");
 
@@ -91,10 +94,18 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
-                int position = (Integer) v.getTag();
-                new EventDeleteTask(event, adapter, main).execute();
-                remove(event);
-                notifyDataSetChanged();
+                new AlertDialog.Builder(main)
+                        .setTitle("Remove")
+                        .setMessage("Remove this event?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                parent.getChildAt(position).startAnimation(AnimationUtils.loadAnimation(main, R.anim.sweep));
+                                new EventDeleteTask(event, adapter, main).execute();
+                                remove(event);
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+
             }
         });
 

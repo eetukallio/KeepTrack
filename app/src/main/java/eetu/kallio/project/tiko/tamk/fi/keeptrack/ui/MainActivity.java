@@ -11,7 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -42,13 +47,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private ConstraintLayout mainLayout;
     private ConstraintLayout signInLayout;
     private SignInButton signInButton;
-    private Button logOutButton;
     private TextView userNameView;
     private Toolbar toolbar;
     private GoogleApiClient googleApiClient;
     private static final int REQ_CODE = 666;
     private String userId;
     LocalBroadcastManager manager;
+    private Animation pulse;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -66,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 singIn();
             }
         });
-        logOutButton = (Button) findViewById(R.id.logOutButton);
         userNameView = (TextView) findViewById(R.id.userName);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        pulse = AnimationUtils.loadAnimation(this, R.anim.pulse);
         setSupportActionBar(toolbar);
         avi.hide();
         mainLayout.setVisibility(View.GONE);
@@ -104,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             Snackbar.make(coordinatorLayout, "Event started", Snackbar.LENGTH_SHORT).show();
             startButton.setText("STOP TRACKING");
             avi.smoothToShow();
+            startButton.startAnimation(pulse);
         } else {
 
             WorkEvent event;
@@ -118,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             EVENT_ON = false;
             postEvent(event);
             avi.smoothToHide();
+            startButton.startAnimation(pulse);
         }
     }
 
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         startActivityForResult(intent, REQ_CODE);
     }
 
-    public void signOut(View view) {
+    public void signOut() {
 
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
@@ -192,7 +199,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
-    public String getUserId () {
-        return userId;
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_log_out:
+                signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

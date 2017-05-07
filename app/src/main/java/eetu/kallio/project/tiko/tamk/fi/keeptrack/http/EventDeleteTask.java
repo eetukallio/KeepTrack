@@ -64,6 +64,5 @@ public class EventDeleteTask extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected void onPostExecute (Integer integer) {
 
-
     }
 }
