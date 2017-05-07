@@ -21,7 +21,7 @@ public class WorkEvent implements Serializable {
     private long durationSeconds;
     private long durationMinutes;
     private long durationHr;
-    private int user;
+    private String user;
 
 
     public WorkEvent() {
@@ -29,7 +29,7 @@ public class WorkEvent implements Serializable {
         startDate = new Date();
         format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.UK);
         startDateToString = format.format(startDate);
-        user = 1;
+        user = "";
     }
 
     @Override
@@ -84,11 +84,11 @@ public class WorkEvent implements Serializable {
         return durationMinutes;
     }
 
-    public int getUser () {
+    public String getUser () {
         return user;
     }
 
-    public void setUser (int user) {
+    public void setUser (String user) {
         this.user = user;
     }
 

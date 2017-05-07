@@ -47,7 +47,7 @@ public class EventController {
     public void deleteEvents() {
         db.deleteAll();
     }
-    
+
 
     /**
      * Returns a event by id.

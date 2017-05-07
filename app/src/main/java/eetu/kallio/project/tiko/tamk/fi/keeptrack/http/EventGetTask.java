@@ -38,7 +38,7 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
         int result = 400;
 
         try {
-            url = new URL("http://10.0.2.2:8080/events");
+            url = new URL("http://207.154.228.188:8080/events");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestMethod("GET");
@@ -86,16 +86,19 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
 
                     JSONObject object = array.getJSONObject(i);
 
-                    date = object.getString("date");
-                    duration = (float)object.getDouble("duration");
-                    if ( duration > 3600 ) {
-                        duration /= 3600;
-                        durationMetric = "hrs";
-                    }else if ( duration > 60 ) {
-                        duration /= 60;
-                        durationMetric = "min";
+                    if ( object.get("user").equals(main.getUser()) ) {
+                        date = object.getString("date");
+                        duration = (float)object.getDouble("duration");
+                        if ( duration > 3600 ) {
+                            duration /= 3600;
+                            durationMetric = "hrs";
+                        }else if ( duration > 60 ) {
+                            duration /= 60;
+                            durationMetric = "min";
+                        }
+                        adapter.add(date + " \nDuration: " + duration + durationMetric);
                     }
-                    adapter.add(date + " \nDuration: " + duration + durationMetric);
+
                 }
             }
         } catch ( JSONException e ) {

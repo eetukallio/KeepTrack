@@ -32,7 +32,7 @@ public class EventPostTask extends AsyncTask<WorkEvent, Void, Integer> {
         Log.d("EventPostTask",  json);
 
         try {
-            url = new URL("http://10.0.2.2:8080/events");
+            url = new URL("http://207.154.228.188:8080/events");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);

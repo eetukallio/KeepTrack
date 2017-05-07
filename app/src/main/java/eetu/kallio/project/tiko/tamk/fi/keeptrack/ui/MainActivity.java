@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -106,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             WorkEvent event;
             stopService(new Intent(this, EventService.class));
             event = receiver.getEvent();
+            event.setUser(userId);
             System.out.println("Event ended");
             startButton.setText("START TRACKING");
             String endMsg = "Event ended. Duration: " + event.getDurationSeconds();
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public void viewEvents(View view) {
 
-        startActivity(new Intent(this, EventListActivity.class));
+        startActivity(new Intent(this, EventListActivity.class).putExtra("user",userId));
     }
 
     public void singIn () {
@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             GoogleSignInAccount account = result.getSignInAccount();
             if ( account.getDisplayName() != null ) {
                 userNameView.setText(account.getDisplayName());
+                userId = account.getId();
             } else {
                 userNameView.setText("");
             }
@@ -185,5 +186,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);
         }
+    }
+
+    public String getUserId () {
+        return userId;
     }
 }
