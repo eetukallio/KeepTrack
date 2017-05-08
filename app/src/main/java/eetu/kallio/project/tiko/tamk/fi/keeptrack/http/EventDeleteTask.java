@@ -8,17 +8,34 @@ import java.net.URL;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 
 /**
- * Created by Eetu Kallio on 7.5.2017
+ * A custom AsyncTask for deleting events from the database via API.
+ *
+ * @author Eetu Kallio
+ * @version 4.0
+ * @since 4.0
  */
-
 public class EventDeleteTask extends AsyncTask<Void, Integer, Integer> {
 
     private WorkEvent event;
 
+    /**
+     * A constructor with the event to be deleted.
+     *
+     * @param event The event to be deleted.
+     */
     public EventDeleteTask (WorkEvent event) {
         this.event = event;
     }
 
+    /**
+     * Lifecycle method of AsyncTask.
+     *
+     * Run in a separate thread from the UI. Forms the connection and deletes the event from
+     * the database via a HTTP Request.
+     *
+     * @param params Parameters to be passed, in this case void.
+     * @return Returns the result of the task.
+     */
     @Override
     protected Integer doInBackground (Void... params) {
 
@@ -42,10 +59,5 @@ public class EventDeleteTask extends AsyncTask<Void, Integer, Integer> {
         }
 
         return result;
-    }
-
-    @Override
-    protected void onPostExecute (Integer integer) {
-
     }
 }

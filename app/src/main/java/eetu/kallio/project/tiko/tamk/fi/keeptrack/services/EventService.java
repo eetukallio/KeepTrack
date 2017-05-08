@@ -8,17 +8,29 @@ import android.util.Log;
 
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 
+/**
+ * Service to track an ongoing event.
+ */
 public class EventService extends Service implements Runnable {
 
     private Thread thread;
     private boolean isRunning;
     private final static String TAG = "EventService";
     private WorkEvent event;
-    LocalBroadcastManager manager;
+    private LocalBroadcastManager manager;
 
+    /**
+     * Default constructor.
+     */
     public EventService () {
     }
 
+    /**
+     * Called to determine the binder for the service.
+     *
+     * @param intent The Intent that was used to bind to this service.
+     * @return Returns null since this service is not bound.
+     */
     @Override
     public IBinder onBind (Intent intent) {
         Log.d(TAG, "onBind()");
@@ -26,6 +38,9 @@ public class EventService extends Service implements Runnable {
         return null;
     }
 
+    /**
+     * Called when the service is destroyed.
+     */
     @Override
     public void onDestroy () {
         Log.d(TAG, "onDestroy()");
@@ -33,6 +48,14 @@ public class EventService extends Service implements Runnable {
         isRunning = false;
     }
 
+    /**
+     * Called when the service is started.
+     *
+     * @param intent The Intent that was used to start this service.
+     * @param flags Additional data about this start request.
+     * @param startId A unique integer representing this specific request to start.
+     * @return The return value indicates what semantics the system should use for the service's current started state.
+     */
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
         Log.d(TAG, "onStart()");
@@ -42,6 +65,9 @@ public class EventService extends Service implements Runnable {
         return START_STICKY;
     }
 
+    /**
+     * Called when the service is created.
+     */
     @Override
     public void onCreate () {
         Log.d(TAG, "onCreate");
@@ -51,6 +77,10 @@ public class EventService extends Service implements Runnable {
         event = new WorkEvent();
     }
 
+    /**
+     * A Runnable interface method. Actions performed in this method are run when
+     * a Thread is started using 'this'.
+     */
     @Override
     public void run () {
         isRunning = true;
@@ -67,6 +97,9 @@ public class EventService extends Service implements Runnable {
         }
     }
 
+    /**
+     * Used to broadcast the data in an event to other activities while the event is running.
+     */
     public void sendEvent() {
         Intent intent;
         intent = new Intent();

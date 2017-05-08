@@ -21,9 +21,12 @@ import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventDeleteTask;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.ui.EventListActivity;
 
 /**
- * Created by Eetu Kallio on 7.5.2017
+ * A custom ArrayAdapter for the listView.
+ *
+ * @author Eetu Kallio
+ * @version 4.0
+ * @since 2.0
  */
-
 public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
 
     private String dayOfMonth;
@@ -35,13 +38,27 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
     private float duration;
     private EventListActivity main;
 
-
+    /**
+     * Constructor for initializing the adapter with necessary parameters.
+     *
+     * @param context The context the adapter is applied to, in this case the activity.
+     * @param resource The resource the adapter uses as a cell, in this case a list item.
+     * @param textViewResourceId The id for the text view that's inflated.
+     */
     public EventArrayAdapter (@NonNull Context context, @LayoutRes int resource, @IdRes int textViewResourceId) {
         super(context, resource, textViewResourceId);
         main = (EventListActivity) context;
     }
 
-
+    /**
+     * Called when a list item is being processed. In here we add most of the functionality
+     * to a list item such as removing and animations.
+     *
+     * @param position Position in the list view.
+     * @param convertView The processed view.
+     * @param parent The list view.
+     * @return Returns the convertedView after changes.
+     */
     @NonNull
     @Override
     public View getView (final int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
@@ -53,9 +70,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
         }
 
         TextView tv = (TextView) convertView.findViewById(R.id.itemTextView);
-
         final WorkEvent event = getItem(position);
-
         String durationMetric = "s";
 
         if ( event != null ) {
@@ -77,6 +92,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
             duration /= 60;
             durationMetric = "min";
         }
+
         DecimalFormat df = new DecimalFormat("#.#");
         String displayedDuration = df.format(duration);
 
@@ -86,6 +102,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
 
         ImageView deleteButton = (ImageView)  convertView.findViewById(R.id.deleteButton);
         deleteButton.setTag(position);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
