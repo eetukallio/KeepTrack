@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -35,14 +34,13 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
     private String startMinutes;
     private float duration;
     private EventListActivity main;
-    private Animation slide;
 
 
     public EventArrayAdapter (@NonNull Context context, @LayoutRes int resource, @IdRes int textViewResourceId) {
         super(context, resource, textViewResourceId);
         main = (EventListActivity) context;
-        slide = AnimationUtils.loadAnimation(context, R.anim.pulse);
     }
+
 
     @NonNull
     @Override
@@ -60,7 +58,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
 
         String durationMetric = "s";
 
-        if ( event.getStartDateToString() != null ) {
+        if ( event != null ) {
             String date = event.getStartDateToString();
             String[] split = date.split(" ");
             dayName = split[0];
@@ -86,9 +84,6 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
                 " " + startHrs + ":" + startMinutes + " \n\nDuration: " +
                 displayedDuration + durationMetric);
 
-        final EventArrayAdapter adapter = this;
-
-
         ImageView deleteButton = (ImageView)  convertView.findViewById(R.id.deleteButton);
         deleteButton.setTag(position);
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +96,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 parent.getChildAt(position).startAnimation(AnimationUtils.loadAnimation(main, R.anim.sweep));
-                                new EventDeleteTask(event, adapter, main).execute();
+                                new EventDeleteTask(event).execute();
                                 remove(event);
                             }})
                         .setNegativeButton(android.R.string.no, null).show();

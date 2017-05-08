@@ -23,7 +23,6 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="20dp"
         android:contentDescription="Remove event"
-        android:onClick="removeEvent"
         android:src="@drawable/remove"/>
 
 </RelativeLayout>
