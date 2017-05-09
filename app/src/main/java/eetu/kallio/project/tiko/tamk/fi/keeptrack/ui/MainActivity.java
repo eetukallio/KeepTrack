@@ -1,7 +1,10 @@
 package eetu.kallio.project.tiko.tamk.fi.keeptrack.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -34,6 +37,7 @@ import com.google.android.gms.common.api.Status;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.R;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventGetTask;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.http.EventPostTask;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.receivers.EventReceiver;
@@ -52,11 +56,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private CoordinatorLayout coordinatorLayout;
     private EventReceiver receiver;
     private Button startButton;
+    private final String IS_TRACKING = "TRACKING";
     private AVLoadingIndicatorView avi;
     private ConstraintLayout mainLayout;
     private ConstraintLayout signInLayout;
     private SignInButton signInButton;
     private TextView userNameView;
+    private TextView thisWeekTitle;
     private ImageView profilePic;
     private Toolbar toolbar;
     private String img_url;
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
         userNameView = (TextView) findViewById(R.id.userName);
+        thisWeekTitle = (TextView) findViewById(R.id.weeklyHoursTitle);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         profilePic = (ImageView) findViewById(R.id.profile_pic);
         pulse = AnimationUtils.loadAnimation(this, R.anim.pulse);
@@ -97,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         mainLayout.setVisibility(View.GONE);
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestId().build();
         googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).build();
+        if ( savedInstanceState != null ) {
+            EVENT_ON = savedInstanceState.getBoolean(IS_TRACKING);
+        }
+
     }
 
     /**
@@ -136,24 +147,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             startService(intent);
             System.out.println("Event started");
             Snackbar.make(coordinatorLayout, "Event started", Snackbar.LENGTH_SHORT).show();
-            startButton.setText("STOP TRACKING");
+            startButton.setText(R.string.stop_track);
             avi.smoothToShow();
             startButton.startAnimation(pulse);
+            updateWeeklyView(false);
         } else {
-
             WorkEvent event;
             stopService(new Intent(this, EventService.class));
             event = receiver.getEvent();
             event.setUser(userId);
             System.out.println("Event ended");
-            startButton.setText("START TRACKING");
-            String endMsg = "Event ended. Duration: " + event.getDurationSeconds();
+            startButton.setText(R.string.start_track);
+            String endMsg = "Event ended. Duration: " + event.getDurationSeconds() + event.getMetric();
             Snackbar.make(coordinatorLayout, endMsg, Snackbar.LENGTH_SHORT).show();
-            stopService(new Intent(this, EventService.class));
             EVENT_ON = false;
             postEvent(event);
             avi.smoothToHide();
             startButton.startAnimation(pulse);
+            thisWeekTitle.setText(R.string.breaktime);
+            updateWeeklyView(true);
         }
     }
 
@@ -297,4 +309,56 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    /**
+     * Saves the instance state.
+     *
+     * @param outState The state to be saved.
+     * @param outPersistentState The persistent state to be stored.
+     */
+    @Override
+    public void onSaveInstanceState (Bundle outState, PersistableBundle outPersistentState) {
+
+        outState.putBoolean(IS_TRACKING, EVENT_ON);
+
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    /**
+     * Updates the UI to view or hide the weekly view.
+     *
+     * @param show True to show, false to hide.
+     */
+    public void updateWeeklyView(boolean show) {
+
+        if ( show ) {
+
+            thisWeekTitle.setVisibility(View.VISIBLE);
+            thisWeekTitle.setAlpha(0f);
+
+            thisWeekTitle.animate()
+                    .alpha(1f)
+                    .setDuration(500)
+                    .setListener(null);
+
+        } else {
+            thisWeekTitle.animate()
+                    .alpha(0f)
+                    .setDuration(500)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd (Animator animation) {
+                            thisWeekTitle.setVisibility(View.GONE);
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Getter for the user id.
+     *
+     * @return The user id.
+     */
+    public String getUser () {
+        return userId;
+    }
 }

@@ -37,6 +37,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
     private String startMinutes;
     private float duration;
     private EventListActivity main;
+    private String metric;
 
     /**
      * Constructor for initializing the adapter with necessary parameters.
@@ -71,7 +72,6 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
 
         TextView tv = (TextView) convertView.findViewById(R.id.itemTextView);
         final WorkEvent event = getItem(position);
-        String durationMetric = "s";
 
         if ( event != null ) {
             String date = event.getStartDateToString();
@@ -83,14 +83,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
             startHrs = split[3].split(":")[0];
             startMinutes = split[3].split(":")[1];
             duration = event.getDurationSeconds();
-        }
-
-        if ( duration > 3600 ) {
-            duration /= 3600;
-            durationMetric = "hrs";
-        }else if ( duration > 60 ) {
-            duration /= 60;
-            durationMetric = "min";
+            metric = event.getMetric();
         }
 
         DecimalFormat df = new DecimalFormat("#.#");
@@ -98,7 +91,7 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
 
         tv.setText(dayName + " " + dayOfMonth + " " + month + " " + year +
                 " " + startHrs + ":" + startMinutes + " \n\nDuration: " +
-                displayedDuration + durationMetric);
+                displayedDuration + metric);
 
         ImageView deleteButton = (ImageView)  convertView.findViewById(R.id.deleteButton);
         deleteButton.setTag(position);
@@ -107,8 +100,8 @@ public class EventArrayAdapter extends ArrayAdapter<WorkEvent> {
             @Override
             public void onClick (View v) {
                 new AlertDialog.Builder(main)
-                        .setTitle("Remove")
-                        .setMessage("Remove this event?")
+                        .setTitle(R.string.remove_dialog_title)
+                        .setMessage(R.string.remove_dialog_body)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {

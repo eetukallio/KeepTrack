@@ -1,5 +1,6 @@
 package eetu.kallio.project.tiko.tamk.fi.keeptrack.http;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListView;
@@ -34,8 +35,9 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
      *
      * @param main The context from which the task was invoked.
      */
-    public EventGetTask (EventListActivity main) {
-        this.main = main;
+    public EventGetTask (Context main) {
+
+        this.main = (EventListActivity) main;
     }
 
     /**

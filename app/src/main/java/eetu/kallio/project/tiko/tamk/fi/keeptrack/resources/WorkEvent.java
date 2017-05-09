@@ -177,4 +177,24 @@ public class WorkEvent implements Serializable {
     public void setId (int id) {
         this.id = id;
     }
+
+    /**
+     * Getter for the events duration metric.
+     *
+     * @return Returns and appropriate metric.
+     */
+    public String getMetric () {
+
+        String metric;
+
+        if ( durationSeconds > 3600 ) {
+            metric = "hrs";
+        } else if ( durationSeconds > 60 ) {
+            metric = "min";
+        } else {
+            metric = "s";
+        }
+
+        return metric;
+    }
 }

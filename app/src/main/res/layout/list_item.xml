@@ -10,9 +10,9 @@
               android:layout_height="match_parent"
               android:padding="15dp"
               android:textSize="20sp"
-              android:textColor="@color/fontwhite"
+              android:textColor="@color/backgroundGreen"
               android:textStyle="bold"
-              android:background="@color/listItem">
+              android:background="@color/fontwhite">
     </TextView>
 
     <ImageView
