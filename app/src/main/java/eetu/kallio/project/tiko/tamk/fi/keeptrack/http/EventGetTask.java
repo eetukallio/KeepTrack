@@ -52,12 +52,14 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected Integer doInBackground (Void... params) {
 
+        Log.d("GET", "Getting data");
         HttpURLConnection connection = null;
         URL url;
         int result = 400;
 
         try {
             url = new URL("http://207.154.228.188:8080/events");
+            Log.d("GET", "Getting data from: http://207.154.228.188:8080/events");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestMethod("GET");
@@ -70,6 +72,7 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
                 builder.append("\n");
             }
             json = builder.toString();
+            Log.d("GET", "Received: \n" + json);
             System.out.println(connection.getResponseCode());
             result = connection.getResponseCode();
 
