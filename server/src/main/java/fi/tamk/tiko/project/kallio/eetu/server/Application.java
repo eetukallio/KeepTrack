@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * The actual Spring Boot application
  *
- * @author Henri Kankaanpää
  * @author Eetu Kallio
  * @version 1.0
  * @since 1.0

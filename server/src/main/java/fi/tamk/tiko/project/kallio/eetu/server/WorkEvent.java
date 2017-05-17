@@ -23,8 +23,7 @@ public class WorkEvent {
     @Column(name="duration")
     private float duration;
     @Column(name="user")
-    private int user;
-
+    private String user;
 
     /**
      * Default constructor
@@ -39,7 +38,7 @@ public class WorkEvent {
      * @param duration The duration of the event.
      * @param user The user of the event.
      */
-    public WorkEvent(long id, String date, float duration, int user) {
+    public WorkEvent(long id, String date, float duration, String user) {
         this.id = id;
         this.date = date;
         this.duration = duration;
@@ -105,7 +104,7 @@ public class WorkEvent {
      *
      * @return User of the event.
      */
-    public int getUser() {
+    public String getUser() {
         return user;
     }
 
@@ -114,7 +113,7 @@ public class WorkEvent {
      *
      * @param user User of the event.
      */
-    public void setUser(int user) {
+    public void setUser(String user) {
         this.user = user;
     }
 }

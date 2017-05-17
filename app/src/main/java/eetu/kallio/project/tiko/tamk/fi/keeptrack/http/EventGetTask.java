@@ -1,44 +1,65 @@
 package eetu.kallio.project.tiko.tamk.fi.keeptrack.http;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.R;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.EventArrayAdapter;
+import eetu.kallio.project.tiko.tamk.fi.keeptrack.resources.WorkEvent;
 import eetu.kallio.project.tiko.tamk.fi.keeptrack.ui.EventListActivity;
 
-/**
- * Created by Eetu Kallio on 25.4.2017
- */
 
+/**
+ * A custom AsyncTask for getting events from the database via API.
+ *
+ * @author Eetu Kallio
+ * @version 4.0
+ * @since 2.0
+ */
 public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
 
     private String json = "";
     private EventListActivity main;
 
-    public EventGetTask (EventListActivity main) {
-        this.main = main;
+    /**
+     * A constructor with the context from which invoked.
+     *
+     * @param main The context from which the task was invoked.
+     */
+    public EventGetTask (Context main) {
+
+        this.main = (EventListActivity) main;
     }
 
+    /**
+     * Lifecycle method of AsyncTask.
+     *
+     * Run in a separate thread from the UI. Forms the connection and does the JSON conversion
+     * to get the data from the database via a HTTP Request.
+     *
+     * @param params Parameters to be passed, in this case void.
+     * @return Returns the result of the task.
+     */
     @Override
     protected Integer doInBackground (Void... params) {
 
+        Log.d("GET", "Getting data");
         HttpURLConnection connection = null;
         URL url;
         int result = 400;
 
         try {
-            url = new URL("http://10.0.2.2:8080/events");
+            url = new URL("http://207.154.228.188:8080/events");
+            Log.d("GET", "Getting data from: http://207.154.228.188:8080/events");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestMethod("GET");
@@ -51,6 +72,7 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
                 builder.append("\n");
             }
             json = builder.toString();
+            Log.d("GET", "Received: \n" + json);
             System.out.println(connection.getResponseCode());
             result = connection.getResponseCode();
 
@@ -63,20 +85,29 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
         return result;
     }
 
+    /**
+     * Lifecycle method of AsyncTask.
+     *
+     * Run after the execution of doInBackground. UI related things such as
+     * adding the listView happen here.
+     *
+     * @param integer integer
+     */
     @Override
     protected void onPostExecute (Integer integer) {
 
+        Log.d("EventGetTask", "getting events");
         JSONArray array = null;
-        String date;
-        float duration;
-        String durationMetric = "s";
         ListView listView = (ListView) main.findViewById(R.id.eventList);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(main, R.layout.list_item, R.id.itemTextView);
+        EventArrayAdapter adapter = new EventArrayAdapter(main, R.layout.list_item, R.id.itemTextView);
+
         try {
+
             array = new JSONArray(json);
             Log.d("JSONArray", array.toString());
 
         }catch ( JSONException e ) {
+
             e.printStackTrace();
         }
 
@@ -85,20 +116,15 @@ public class EventGetTask extends AsyncTask<Void, Integer, Integer> {
                 for ( int i = 0; i < array.length(); i++ ) {
 
                     JSONObject object = array.getJSONObject(i);
+                    WorkEvent event = new WorkEvent(object.getInt("id"), object.getString("date"), object.getLong("duration"), object.getString("user"));
 
-                    date = object.getString("date");
-                    duration = (float)object.getDouble("duration");
-                    if ( duration > 3600 ) {
-                        duration /= 3600;
-                        durationMetric = "hrs";
-                    }else if ( duration > 60 ) {
-                        duration /= 60;
-                        durationMetric = "min";
+                    if ( event.getUser().equals(main.getUser()) ) {
+                        adapter.add(event);
                     }
-                    adapter.add(date + " \nDuration: " + duration + durationMetric);
                 }
             }
         } catch ( JSONException e ) {
+
             e.printStackTrace();
         }
 
